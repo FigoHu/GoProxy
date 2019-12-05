@@ -2,12 +2,23 @@ package main
 
 import (
     "net/http"
+    "github.com/spf13/viper"
     "log"
 )
 
 func main() {
-    http.Handle("/", http.FileServer(http.Dir("/root/golang/www/")))
-    err := http.ListenAndServe(":80", nil)
+    viper.SetConfigName("config")
+    viper.AddConfigPath(".")
+    viper.SetConfigType("json")
+    err := viper.ReadInConfig()
+    if err != nil {
+        fmt.Printf("config file error: %s\n", err)
+        os.Exit(1)
+    }
+    wwwdir := viper.Get("www_dir")
+	http_port := viper.Get("http_port")
+    http.Handle("/", http.FileServer(http.Dir(wwwdir)))
+    err := http.ListenAndServe(":"+http_port, nil)
     if err != nil {
         log.Fatal("ListenAndServe: ", err)
     }

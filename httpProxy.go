@@ -7,6 +7,7 @@ import (
     "net"
     "net/http"
     "time"
+    "github.com/spf13/viper"
 )
 func handleTunneling(w http.ResponseWriter, r *http.Request) {
     dest_conn, err := net.DialTimeout("tcp", r.Host, 10*time.Second)
@@ -51,10 +52,22 @@ func copyHeader(dst, src http.Header) {
     }
 }
 func main() {
+    viper.SetConfigName("config")
+    viper.AddConfigPath(".")
+    viper.SetConfigType("json")
+    err := viper.ReadInConfig()
+    if err != nil {
+        fmt.Printf("config file error: %s\n", err)
+        os.Exit(1)
+    }
+
+    pemPath_ := viper.Get("pemPath")
+    keyPath_ := viper.Get("keyPath")
+    https_port:= viper.Get("https_port")
     var pemPath string
-    flag.StringVar(&pemPath, "pem","/root/.acme.sh/luoluofly.xin/luoluofly.xin.cer", "path to pem file")
+    flag.StringVar(&pemPath, "pem", pemPath_, "path to pem file")
     var keyPath string
-    flag.StringVar(&keyPath, "key", "/root/.acme.sh/luoluofly.xin/luoluofly.xin.key", "path to key file")
+    flag.StringVar(&keyPath, "key", keyPath_, "path to key file")
     var proto string
     flag.StringVar(&proto, "proto", "https", "Proxy protocol (http or https)")
     flag.Parse()
@@ -62,7 +75,7 @@ func main() {
         log.Fatal("Protocol must be either http or https")
     }
     server := &http.Server{
-        Addr: ":8888",
+        Addr: ":"+https_port,
         Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
             if r.Method == http.MethodConnect {
                 handleTunneling(w, r)
