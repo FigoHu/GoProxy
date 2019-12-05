@@ -19,10 +19,10 @@ func main() {
     }
     var wwwdir string
     var http_port string
-    wwwdir = viper.Get("www_dir")
-    http_port = viper.Get("http_port")
+    wwwdir,_ = viper.Get("www_dir")
+    http_port,_ = viper.Get("http_port")
     http.Handle("/", http.FileServer(http.Dir(wwwdir)))
-    err := http.ListenAndServe(":"+http_port, nil)
+    err = http.ListenAndServe(":"+http_port, nil)
     if err != nil {
         log.Fatal("ListenAndServe: ", err)
     }
