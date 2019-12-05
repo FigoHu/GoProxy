@@ -7,6 +7,8 @@ import (
     "net"
     "net/http"
     "time"
+    "fmt"
+    "os"
     "github.com/spf13/viper"
 )
 func handleTunneling(w http.ResponseWriter, r *http.Request) {
@@ -61,16 +63,21 @@ func main() {
         os.Exit(1)
     }
 
-    pemPath_ := viper.Get("pemPath")
-    keyPath_ := viper.Get("keyPath")
-    https_port:= viper.Get("https_port")
+
     var pemPath string
-    flag.StringVar(&pemPath, "pem", pemPath_, "path to pem file")
+    //flag.StringVar(&pemPath, "pem", pemPath_, "path to pem file")
     var keyPath string
-    flag.StringVar(&keyPath, "key", keyPath_, "path to key file")
+    //flag.StringVar(&keyPath, "key", keyPath_, "path to key file")
+    var https_port string
+    pemPath := viper.Get("pemPath")
+    keyPath := viper.Get("keyPath")
+    https_port:= viper.Get("https_port")
     var proto string
     flag.StringVar(&proto, "proto", "https", "Proxy protocol (http or https)")
     flag.Parse()
+	
+	
+	
     if proto != "http" && proto != "https" {
         log.Fatal("Protocol must be either http or https")
     }
