@@ -19,8 +19,8 @@ func main() {
     }
     var wwwdir string
     var http_port string
-    wwwdir,_ = viper.Get("www_dir")
-    http_port,_ = viper.Get("http_port")
+    wwwdir,_ = viper.Get("www_dir").(string)
+    http_port,_ = viper.Get("http_port").(string)
     http.Handle("/", http.FileServer(http.Dir(wwwdir)))
     err = http.ListenAndServe(":"+http_port, nil)
     if err != nil {

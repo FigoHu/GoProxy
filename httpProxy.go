@@ -69,9 +69,9 @@ func main() {
     var keyPath string
     //flag.StringVar(&keyPath, "key", keyPath_, "path to key file")
     var https_port string
-    pemPath,_ = viper.Get("pemPath")
-    keyPath,_ = viper.Get("keyPath")
-    https_port,_ = viper.Get("https_port")
+    pemPath,_ = viper.Get("pemPath").(string)
+    keyPath,_ = viper.Get("keyPath").(string)
+    https_port,_ = viper.Get("https_port").(string)
     var proto string
     flag.StringVar(&proto, "proto", "https", "Proxy protocol (http or https)")
     flag.Parse()
