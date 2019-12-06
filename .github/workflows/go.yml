@@ -24,12 +24,17 @@ jobs:
             dep ensure
         fi
 
-    - name: Build
-      run: go build httpProxy.go
-      
-    - name: Build
-      run: go build httpServer.go
+    - name: Assemble artifact
+      run: |
+        rm -rf ./artifact/
+        mkdir -p ./artifact/
+        
+    - name: Build httpProxy
+      run: go build -o ./artifact/httpProxy httpProxy.go
     
+    - name: Build httpServer
+      run: go build -o ./artifact/httpServer httpServer.go
+      
     - name: Upload artifact
       uses: actions/upload-artifact@v1.0.0
       with:
