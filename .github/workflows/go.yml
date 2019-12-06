@@ -25,4 +25,7 @@ jobs:
         fi
 
     - name: Build
-      run: go build -v .
+      run: go build -v httpProxy.go
+      
+    - name: Build
+      run: go build -v httpServer.go
