@@ -18,8 +18,9 @@ function go_install(){
     echo 'export GOROOT=/usr/local/go' >> ~/.bashrc
     echo 'export PATH=$PATH:/usr/local/go/bin'  >> ~/.bashrc
     echo 'export GOPATH=/root/golang' >> ~/.bashrc
-    source ~/.bashrc
     
+    sleep 1
+    source ~/.bashrc
     go get github.com/spf13/viper
     go get github.com/fsnotify/fsnotify
 }
@@ -36,7 +37,7 @@ function acme_install(){
 }
 
 function add_httpServer(){
-cat <<EOF > /root/golang/httpServer.go
+cat <<'EOF' > /root/golang/httpServer.go
 // +build ignore
 package main
 
@@ -71,7 +72,7 @@ EOF
 }
 
 function add_httpProxy(){
-    cat <<EOF > /root/golang/httpProxy.go
+cat <<'EOF' > /root/golang/httpProxy.go
 // +build ignore
 package main
 import (
@@ -178,21 +179,21 @@ EOF
 }
 
 function add_config(){
-cat <<EOF > /root/golang/config.json 
+cat <<'EOF' > /root/golang/config.json 
 {
-  "domainname": "<domainname>",
+  "domainname": "<DOMAINNAME>",
   "http_port":"80",
   "www_dir":"/root/golang/www/",
   "https_port":"8888",
  
-  "pemPath":"/root/.acme.sh/<domainname>/<domainname>.cer"
-  "keyPath":"/root/.acme.sh/<domainname>/<domainname>.key"
+  "pemPath":"/root/.acme.sh/<DOMAINNAME>/<DOMAINNAME>.cer"
+  "keyPath":"/root/.acme.sh/<DOMAINNAME>/<DOMAINNAME>.key"
 }
 EOF
 }
 
 function add_guard(){
-cat <<EOF > /root/golang/guard.sh
+cat <<'EOF' > /root/golang/guard.sh
 #!/bin/bash
 
 DAEMON_NAME="httpProxy"
@@ -219,7 +220,7 @@ EOF
 }
 
 function add_update_cert(){
-cat <<EOF > /root/golang/update_cert.sh
+cat <<'EOF' > /root/golang/update_cert.sh
 #!/bin/sh
 JQ_EXEC=`which jq`
 FILE_PATH=config.json
@@ -243,7 +244,7 @@ EOF
 }
 
 function add_start(){
-cat <<EOF > /root/golang/start.sh
+cat <<'EOF' > /root/golang/start.sh
 #/bin/bash
 DAEMON_NAME="httpProxy"
 DAEMON_HTTP="httpServer"
@@ -266,7 +267,7 @@ EOF
 }
 
 function add_stop(){
-cat <<EOF > /root/golang/stop.sh
+cat <<'EOF' > /root/golang/stop.sh
 #/bin/bash
 DAEMON_NAME="httpProxy"
 DAEMON_HTTP="httpServer"
@@ -296,6 +297,7 @@ EOF
 function create_files(){
     add_httpServer
     add_httpProxy
+    add_guard
     add_config
     add_update_cert
     
@@ -304,8 +306,8 @@ function create_files(){
 }
 
 function config_crontab(){
-echo '10 0 */10 * * "/root/golang/update_cert.sh" > /dev/null' >> /etc/contab
-echo '*/30 * * * * "/root/golang/guard.sh" > /dev/null' >> /etc/contab
+    echo '10 0 */10 * * "/root/golang/update_cert.sh" > /dev/null' >> /etc/contab
+    echo '*/30 * * * * "/root/golang/guard.sh" > /dev/null' >> /etc/contab
 
 }
 
