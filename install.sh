@@ -14,13 +14,19 @@ function pre_install(){
 function go_install(){
     wget https://dl.google.com/go/go1.13.5.linux-amd64.tar.gz
     tar -C /usr/local -xzf go1.13.5.linux-amd64.tar.gz
-
+	
+	export GOROOT=/usr/local/go
+	export PATH=$PATH:/usr/local/go/bin
+	export GOPATH=/root/golang
+	
     echo 'export GOROOT=/usr/local/go' >> ~/.bashrc
     echo 'export PATH=$PATH:/usr/local/go/bin'  >> ~/.bashrc
     echo 'export GOPATH=/root/golang' >> ~/.bashrc
     
     sleep 1
     source ~/.bashrc
+	
+	
     go get github.com/spf13/viper
     go get github.com/fsnotify/fsnotify
 }
@@ -181,13 +187,13 @@ EOF
 function add_config(){
 cat <<'EOF' > /root/golang/config.json 
 {
-  "domainname": "<DOMAINNAME>",
+  "domainname": "<domainname>",
   "http_port":"80",
   "www_dir":"/root/golang/www/",
   "https_port":"8888",
  
-  "pemPath":"/root/.acme.sh/<DOMAINNAME>/<DOMAINNAME>.cer"
-  "keyPath":"/root/.acme.sh/<DOMAINNAME>/<DOMAINNAME>.key"
+  "pemPath":"/root/.acme.sh/<domainname>/<domainname>.cer"
+  "keyPath":"/root/.acme.sh/<domainname>/<domainname>.key"
 }
 EOF
 }
