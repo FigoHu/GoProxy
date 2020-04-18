@@ -13,7 +13,7 @@ function pre_install(){
 
 function go_install(){
     wget https://dl.google.com/go/go1.13.5.linux-amd64.tar.gz
-    tar -C /usr/local -xzf go1.13.5.linux-amd64.tar.gz
+    tar -C /usr/local -zxvf go1.13.5.linux-amd64.tar.gz
 	
 	export GOROOT=/usr/local/go
 	export PATH=$PATH:/usr/local/go/bin
@@ -26,9 +26,6 @@ function go_install(){
     sleep 1
     source ~/.bashrc
 	
-	
-    go get github.com/spf13/viper
-    go get github.com/fsnotify/fsnotify
 }
 
 
@@ -319,8 +316,11 @@ function config_crontab(){
 function install(){
     pre_install
     create_files
-    acme_install
     go_install
+    acme_install
+    echo $GOROOT
+    go get github.com/spf13/viper
+    go get github.com/fsnotify/fsnotify
     add_firewall
     
     config_crontab
