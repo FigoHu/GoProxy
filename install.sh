@@ -1,6 +1,6 @@
 #!/bin/sh
 function pre_install(){
-    yum update
+    yum -y update
     yum install -y wget curl vim git
     yum install -y autoconf automake libtool
     yum install -y epel-release
@@ -312,17 +312,16 @@ function create_files(){
 }
 
 function config_crontab(){
-    echo '10 0 */10 * * "/root/golang/update_cert.sh" > /dev/null' >> /etc/contab
-    echo '*/30 * * * * "/root/golang/guard.sh" > /dev/null' >> /etc/contab
-
+    echo '10 0 */10 * * "/root/golang/update_cert.sh" > /dev/null' >> /var/spool/cron/root
+    echo '*/30 * * * * "/root/golang/guard.sh" > /dev/null' >> /var/spool/cron/root
 }
 
 function install(){
     pre_install
     create_files
+    acme_install
     go_install
     add_firewall
-    acme_install
     
     config_crontab
 }
