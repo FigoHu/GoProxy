@@ -1,8 +1,8 @@
 {
-  "domainname": "nicetry.win",
+  "domainname": "<DOMAINNAME>",
   "http_port":"80",
   "www_dir":"/root/golang/www/",
   "https_port":"8888",
-  "pemPath":"/root/.acme.sh/nicetry.win/nicetry.win.cer",
-  "keyPath":"/root/.acme.sh/nicetry.win/nicetry.win.key"
+  "pemPath":"/root/.acme.sh/<DOMAINNAME>/<DOMAINNAME>.cer",
+  "keyPath":"/root/.acme.sh/<DOMAINNAME>/<DOMAINNAME>.key"
 }
