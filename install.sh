@@ -9,6 +9,7 @@ function pre_install(){
     
     mkdir /root/golang/
     cd /root/golang/
+    mkdir /data
 }
 
 function go_install(){
@@ -58,7 +59,7 @@ import (
 
 func main() {
     viper.SetConfigName("config")
-    viper.AddConfigPath(".")
+    viper.AddConfigPath("./data/")
     viper.SetConfigType("json")
     err := viper.ReadInConfig()
     if err != nil {
@@ -138,7 +139,7 @@ func copyHeader(dst, src http.Header) {
 }
 func main() {
     viper.SetConfigName("config")
-    viper.AddConfigPath(".")
+    viper.AddConfigPath("./data/")
     viper.SetConfigType("json")
     err := viper.ReadInConfig()
     if err != nil {
@@ -185,7 +186,7 @@ EOF
 }
 
 function add_config(){
-cat <<'EOF' > /root/golang/config.json 
+cat <<'EOF' > /root/golang/data/config.json 
 {
   "domainname": "<DOMAINNAME>",
   "http_port":"80",
@@ -229,7 +230,7 @@ function add_update_cert(){
 cat <<'EOF' > /root/golang/update_cert.sh
 #!/bin/sh
 JQ_EXEC=`which jq`
-FILE_PATH=config.json
+FILE_PATH=./data/config.json
 domainname=$(cat $FILE_PATH | ${JQ_EXEC} .domainname | sed 's/\"//g')
 if [ "$domainname" == null ];then
        echo "cannot found 'domainname' in config.json"
@@ -260,14 +261,14 @@ PID=`ps -ef | grep $DAEMON_HTTP | grep -v grep`
 
 if [ "$PID" == "" ];then
         echo "starting $DAEMON_HTTP ..."
-        nohup $DAEMON_ADDR$DAEMON_HTTP &
+        nohup $DAEMON_ADDR$DAEMON_HTTP >/dev/null 2>&1 &
 fi
 
 PID=`ps -ef | grep $DAEMON_NAME| grep -v grep`
 
 if [ "$PID" == "" ];then
         echo "starting $DAEMON_NAME..."
-        nohup $DAEMON_ADDR$DAEMON_NAME&
+        nohup $DAEMON_ADDR$DAEMON_NAME >/dev/null 2>&1 &
 fi
 EOF
 }
