@@ -193,8 +193,8 @@ cat <<'EOF' > /root/golang/config.json
   "www_dir":"/root/golang/www/",
   "https_port":"8888",
  
-  "pemPath":"/root/.acme.sh/<domainname>/<domainname>.cer"
-  "keyPath":"/root/.acme.sh/<domainname>/<domainname>.key"
+  "pemPath":"/root/.acme.sh/<DOMAINNAME>/<DOMAINNAME>.cer"
+  "keyPath":"/root/.acme.sh/<DOMAINNAME>/<DOMAINNAME>.key"
 }
 EOF
 }
