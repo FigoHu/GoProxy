@@ -5,7 +5,6 @@ function pre_install(){
     yum install -y autoconf automake libtool
     yum install -y epel-release
     yum install -y jq
-    yum install -y firewalld
     yum install -y crontabs
     
     mkdir /root/golang/
@@ -35,9 +34,9 @@ function go_install(){
 
 
 function add_firewall(){
-    firewall-cmd --permanent --add-port=8888/tcp
-    firewall-cmd --permanent --add-port=80/tcp
-    firewall-cmd --reload
+    #firewall-cmd --permanent --add-port=8888/tcp
+    #firewall-cmd --permanent --add-port=80/tcp
+    #firewall-cmd --reload
 }
 
 function acme_install(){
