@@ -309,6 +309,8 @@ function create_files(){
     
     add_start
     add_stop
+    
+    chmod +x *.sh
 }
 
 function config_crontab(){
