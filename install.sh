@@ -14,17 +14,15 @@ function pre_install(){
 function go_install(){
     wget https://dl.google.com/go/go1.13.5.linux-amd64.tar.gz
     tar -C /usr/local -zxvf go1.13.5.linux-amd64.tar.gz
-	
-	export GOROOT=/usr/local/go
-	export PATH=$PATH:/usr/local/go/bin
-	export GOPATH=/root/golang
+    #export GOROOT=/usr/local/go
+    #export PATH=$PATH:/usr/local/go/bin
+    #export GOPATH=/root/golang
 	
     echo 'export GOROOT=/usr/local/go' >> ~/.bashrc
     echo 'export PATH=$PATH:/usr/local/go/bin'  >> ~/.bashrc
     echo 'export GOPATH=/root/golang' >> ~/.bashrc
     
-    sleep 1
-    source ~/.bashrc
+    . ~/.bashrc
 	
 }
 
