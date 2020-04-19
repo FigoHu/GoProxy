@@ -34,11 +34,11 @@ function go_install(){
 }
 
 
-function add_firewall(){
+#function add_firewall(){
     #firewall-cmd --permanent --add-port=8888/tcp
     #firewall-cmd --permanent --add-port=80/tcp
     #firewall-cmd --reload
-}
+#}
 
 function acme_install(){
     curl  https://get.acme.sh | sh
@@ -324,7 +324,7 @@ function install(){
     create_files
     go_install
     acme_install
-    add_firewall
+    #add_firewall
     
     config_crontab
 }
