@@ -5,6 +5,7 @@ function pre_install(){
     yum install -y autoconf automake libtool
     yum install -y epel-release
     yum install -y jq
+    yum install -y firewalld
     yum install -y crontabs
     
     mkdir /root/golang/
@@ -12,18 +13,24 @@ function pre_install(){
 }
 
 function go_install(){
+    cd /root/
     wget https://dl.google.com/go/go1.13.5.linux-amd64.tar.gz
     tar -C /usr/local -zxvf go1.13.5.linux-amd64.tar.gz
-    #export GOROOT=/usr/local/go
-    #export PATH=$PATH:/usr/local/go/bin
-    #export GOPATH=/root/golang
 	
     echo 'export GOROOT=/usr/local/go' >> ~/.bashrc
     echo 'export PATH=$PATH:/usr/local/go/bin'  >> ~/.bashrc
     echo 'export GOPATH=/root/golang' >> ~/.bashrc
     
     . ~/.bashrc
-	
+    
+    rm -rf go1.13.5.linux-amd64.tar.gz
+    
+    go get github.com/spf13/viper
+    go get github.com/fsnotify/fsnotify
+    
+    cd /root/golang
+    go build httpServer.go
+    go build httpProxy.go
 }
 
 
@@ -140,7 +147,6 @@ func main() {
         os.Exit(1)
     }
 
-
     var pemPath string
     //flag.StringVar(&pemPath, "pem", pemPath_, "path to pem file")
     var keyPath string
@@ -182,7 +188,7 @@ EOF
 function add_config(){
 cat <<'EOF' > /root/golang/config.json 
 {
-  "domainname": "<domainname>",
+  "domainname": "<DOMAINNAME>",
   "http_port":"80",
   "www_dir":"/root/golang/www/",
   "https_port":"8888",
@@ -316,9 +322,6 @@ function install(){
     create_files
     go_install
     acme_install
-    echo $GOROOT
-    go get github.com/spf13/viper
-    go get github.com/fsnotify/fsnotify
     add_firewall
     
     config_crontab
