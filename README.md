@@ -10,6 +10,6 @@ Step 1. Edit config.json file. Replace <DOMAINNAME> with your server's real doma
 Step 2.   
   ```
   # cd ~/golang
-  # start.sh
+  # ./start.sh
   ```
   
