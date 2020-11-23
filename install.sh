@@ -311,6 +311,7 @@ function create_files(){
     add_start
     add_stop
     
+    cd /root/golang/
     chmod +x *.sh
 }
 
