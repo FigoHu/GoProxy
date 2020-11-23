@@ -235,7 +235,7 @@ domainname=$(cat $FILE_PATH | ${JQ_EXEC} .domainname | sed 's/\"//g')
 if [ "$domainname" == null ];then
        echo "cannot found 'domainname' in config.json"
 else
-        /root/.acme.sh/acme.sh --issue -d $domainname --webroot /root/golang/www
+        /root/.acme.sh/acme.sh --issue -d $domainname --force --webroot /root/golang/www
 fi
 
 PID=`ps -ef| grep httpProxy | grep -v grep|awk '{ print $2}'`
