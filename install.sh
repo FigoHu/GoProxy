@@ -28,6 +28,12 @@ function go_install(){
     go get github.com/spf13/viper
     go get github.com/fsnotify/fsnotify
     
+    # New hcl has 2 versions:v1 and v2. We need v1
+    cd /root/golang/src/github.com
+    mkdir hashicorp
+    cd hashicorp
+    git clone -b v1.0.1-vault-3 https://github.com/hashicorp/hcl.git
+    
     cd /root/golang
     go build httpServer.go
     go build httpProxy.go
